@@ -1,41 +1,195 @@
-import streamlit as st 
+# import streamlit as st 
+
+# import io
+
+# from PIL import Image
+
+# import streamlit as st
+# from streamlit_drawable_canvas import st_canvas
+
+# # 画面のタイトル
+# st.title("お絵かきアプリ")
+
+
+
+# import streamlit as st
+# from PIL import Image
+
+
+
+# uploaded_file = st.file_uploader(
+#     "画像をアップロード",
+#     type=["png", "jpg", "jpeg"]
+# )
+
+# if uploaded_file:
+#     image = Image.open(uploaded_file)
+
+#     st.image(image)
+
+# image = None
+
+# if uploaded_file:
+#     image = Image.open(uploaded_file).convert("RGBA")
+
+# mode = st.radio("モード",["消しゴム", "筆"])
+
+
+
+# stroke_color = st.color_picker("筆の色", "#000000")
+# stroke_width = st.slider(
+#     "筆の太さ",
+#     min_value=1,
+#     max_value=50,
+#     value=5
+# )
+
+# if mode == "筆":
+#     stroke_color = st.color_picker(
+#         "筆の色",
+#         "#000000"
+#     )
+# else:
+#     stroke_color = "#ffffff"
+
+# # 描く場所を表示
+# canvas_result = st_canvas(
+#     return_image_data=True,
+#     fill_color="rgba(255, 0, 0, 0.3)",
+#     stroke_color=stroke_color,
+#     stroke_width=stroke_width,          
+#     background_color="#ffffff",         # 背景色
+#     width=700,                          # 横の大きさ
+#     height=500,                         # 縦の大きさ
+#     drawing_mode="freedraw",            # 自由に線を描く
+#     key="canvas",
+
+#     background_image=image,
+
+# )
+
+
+# # 描いた画像を保存したり表示したりできる
+
+# if canvas_result.image_data is not None:
+#     st.image(canvas_result.image_data, caption="あなたの絵")
+
+
+
+# # NumPy配列 → PNG画像に変換
+#     image = Image.fromarray(canvas_result.image_data.astype("uint8"))
+
+#     # PNGとしてメモリに保存
+#     buffer = io.BytesIO()
+#     image.save(buffer, format="PNG")
+
+#     # ダウンロード
+#     st.download_button(
+#         label="画像をダウンロード",
+#         data=buffer.getvalue(),
+#         file_name="お絵かき.png",
+#         mime="image/png",
+#     )
+
 
 
 
 
 import streamlit as st
+import io
+from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 
-# 画面のタイトル
 st.title("お絵かきアプリ")
 
-# 描く場所を表示
+
+
+
+uploaded_file = st.file_uploader(
+    "画像をアップロード",
+    type=["png", "jpg", "jpeg"]
+)
+
+image = None
+
+if uploaded_file:
+    image = Image.open(uploaded_file).convert("RGBA")
+
+
+
+
+mode = st.radio(
+    "モード",
+    ["筆", "消しゴム"]
+)
+
+
+
+if mode == "筆":
+
+    stroke_color = st.color_picker(
+        "筆の色",
+        "#000000"
+    )
+
+else:
+
+    stroke_color = "#ffffff"
+
+
+stroke_width = st.slider(
+    "筆の太さ・消しゴムの大きさ",
+    min_value=1,
+    max_value=50,
+    value=5
+)
+
+
+
 canvas_result = st_canvas(
-    fill_color="rgba(255, 0, 0, 0.3)",  # ぬりつぶし色
-    stroke_width=5,                     # 線の太さ
-    stroke_color="#000000",             # 線の色
-    background_color="#ffffff",         # 背景色
-    width=600,                          # 横の大きさ
-    height=400,                         # 縦の大きさ
-    drawing_mode="freedraw",            # 自由に線を描く
+    return_image_data=True,
+
+    fill_color="rgba(255, 0, 0, 0.3)",
+
+    stroke_color=stroke_color,
+    stroke_width=stroke_width,
+
+    background_color="#ffffff",
+    background_image=image,
+
+    width=700,
+    height=500,
+
+    drawing_mode="freedraw",
+
     key="canvas",
 )
 
-# 描いた画像を保存したり表示したりできる
+
 if canvas_result.image_data is not None:
-    st.image(canvas_result.image_data, caption="あなたの絵")
 
+    st.image(
+        canvas_result.image_data,
+        caption="あなたの絵"
+    )
 
+    image = Image.fromarray(
+        canvas_result.image_data.astype("uint8")
+    )
 
+    buffer = io.BytesIO()
 
+    image.save(
+        buffer,
+        format="PNG"
+    )
 
-
-
-
-
-
-
-
+    st.download_button(
+        label="画像をダウンロード",
+        data=buffer.getvalue(),
+        file_name="お絵かき.png",
+        mime="image/png",
+    )
 
 
 # import io
