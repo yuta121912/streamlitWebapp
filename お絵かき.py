@@ -41,7 +41,7 @@ canvas_result = st_canvas(
     width=700,
     height=500,
     drawing_mode="freedraw",
-    initial_drawing=st.session_state["saved_drawing"],  # 過去の絵を復元
+    initial_drawing=st.session_state["saved_drawing"],  # 絵を復元(保存された絵のデータ)
     key="canvas",
 )
 
@@ -58,11 +58,11 @@ if canvas_result.image_data is not None:
         final_image = Image.alpha_composite(resized_bg, canvas_image)
     else:
         # 背景がない場合は、白い背景を下敷きにして手書きの線を重ねる
-        base_bg = Image.new("RGBA", (700, 500), (255, 255, 255, 255))
+        base_bg = Image.new("RGBA", (700, 500), (255, 0, 0, 0))
         final_image = Image.alpha_composite(base_bg, canvas_image)
 
     # 3. 合成された1枚の画像をプレビュー表示
-    st.image(final_image, caption="合成された画像")
+    st.image(final_image, caption="合成された画像tawasi")
 
     # 4. 合成した画像をダウンロード用に保存
     buffer = io.BytesIO()
